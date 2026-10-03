@@ -1,0 +1,1173 @@
+{
+  "schema_version": 1,
+  "generated_from": "current src/cadtoolbox Python AST",
+  "modules": [
+    {
+      "module": "cadtoolbox.catalog",
+      "file": "src/cadtoolbox/catalog.py",
+      "sha256": "6b2c8f71949751a2957e68c78e805b965d512b758b87ff7d3a4711e4b7e441c6",
+      "exports": [
+        {
+          "name": "CatalogError",
+          "kind": "ClassDef",
+          "line": 12,
+          "fields": []
+        },
+        {
+          "name": "load_json",
+          "kind": "FunctionDef",
+          "line": 16,
+          "arguments": "path: Path"
+        },
+        {
+          "name": "load_collection",
+          "kind": "FunctionDef",
+          "line": 26,
+          "arguments": "root: Path, kind: str"
+        },
+        {
+          "name": "get_item",
+          "kind": "FunctionDef",
+          "line": 36,
+          "arguments": "root: Path, kind: str, item_id: str"
+        },
+        {
+          "name": "validate_project",
+          "kind": "FunctionDef",
+          "line": 67,
+          "arguments": "root: Path, *, check_sources: bool=False"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.cli",
+      "file": "src/cadtoolbox/cli.py",
+      "sha256": "3a7a2d8624a8c6e3f245fa093611d445d3ab1fd872f2785de2316876720d9ee0",
+      "exports": [
+        {
+          "name": "main",
+          "kind": "FunctionDef",
+          "line": 22,
+          "arguments": "argv: list[str] | None=None"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.contracts",
+      "file": "src/cadtoolbox/contracts.py",
+      "sha256": "096e020cbdeedfc26d74b089407cecee65612e0dad5c7fa0421c7a43f64cdd65",
+      "exports": [
+        {
+          "name": "ContractError",
+          "kind": "ClassDef",
+          "line": 7,
+          "fields": []
+        },
+        {
+          "name": "Unit",
+          "kind": "ClassDef",
+          "line": 10,
+          "fields": []
+        },
+        {
+          "name": "finite",
+          "kind": "FunctionDef",
+          "line": 20,
+          "arguments": "value: float, name: str, *, positive: bool=False"
+        },
+        {
+          "name": "vector",
+          "kind": "FunctionDef",
+          "line": 27,
+          "arguments": "values, name: str"
+        },
+        {
+          "name": "dot",
+          "kind": "FunctionDef",
+          "line": 33,
+          "arguments": "a, b"
+        },
+        {
+          "name": "cross",
+          "kind": "FunctionDef",
+          "line": 37,
+          "arguments": "a, b"
+        },
+        {
+          "name": "normalized",
+          "kind": "FunctionDef",
+          "line": 41,
+          "arguments": "values"
+        },
+        {
+          "name": "Axis",
+          "kind": "ClassDef",
+          "line": 50,
+          "fields": [
+            "origin_mm: tuple[float, float, float] = (0, 0, 0)",
+            "direction: tuple[float, float, float] = (1, 0, 0)"
+          ]
+        },
+        {
+          "name": "Frame",
+          "kind": "ClassDef",
+          "line": 59,
+          "fields": [
+            "axis: Axis",
+            "radial_reference: tuple[float, float, float] = (0, 1, 0)"
+          ]
+        },
+        {
+          "name": "ThicknessKind",
+          "kind": "ClassDef",
+          "line": 84,
+          "fields": []
+        },
+        {
+          "name": "Thickness",
+          "kind": "ClassDef",
+          "line": 91,
+          "fields": [
+            "value_mm: float",
+            "kind: ThicknessKind"
+          ]
+        },
+        {
+          "name": "ParameterStatus",
+          "kind": "ClassDef",
+          "line": 109,
+          "fields": []
+        },
+        {
+          "name": "Parameter",
+          "kind": "ClassDef",
+          "line": 118,
+          "fields": [
+            "name: str",
+            "value: float | None",
+            "unit: Unit",
+            "source: str",
+            "status: ParameterStatus"
+          ]
+        },
+        {
+          "name": "DomainKind",
+          "kind": "ClassDef",
+          "line": 159,
+          "fields": []
+        },
+        {
+          "name": "DomainSpec",
+          "kind": "ClassDef",
+          "line": 166,
+          "fields": [
+            "kind: DomainKind",
+            "frame: Frame",
+            "source: str"
+          ]
+        },
+        {
+          "name": "ShapeKind",
+          "kind": "ClassDef",
+          "line": 176,
+          "fields": []
+        },
+        {
+          "name": "ShapeExpectation",
+          "kind": "ClassDef",
+          "line": 183,
+          "fields": [
+            "kind: ShapeKind",
+            "solid_count: int = 0"
+          ]
+        },
+        {
+          "name": "QualityPolicy",
+          "kind": "ClassDef",
+          "line": 195,
+          "fields": [
+            "area_abs_mm2: float = 1e-06",
+            "area_rel: float = 1e-07",
+            "volume_abs_mm3: float = 1e-06",
+            "volume_rel: float = 1e-07",
+            "bbox_abs_mm: float = 1e-05",
+            "reject_degenerated_edges: bool = False"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.assembly",
+      "file": "src/cadtoolbox/geometry/assembly.py",
+      "sha256": "74d1085f537996e10e6cc7cac0ef35aa9369099878659834483a842ca751303d",
+      "exports": [
+        {
+          "name": "Component",
+          "kind": "ClassDef",
+          "line": 14,
+          "fields": [
+            "id: str",
+            "role: str",
+            "solid: cq.Solid"
+          ]
+        },
+        {
+          "name": "unify_same_domain",
+          "kind": "FunctionDef",
+          "line": 31,
+          "arguments": "solid: cq.Solid, *, tolerance_mm=1e-05, volume_rel=1e-09"
+        },
+        {
+          "name": "fuse_components",
+          "kind": "FunctionDef",
+          "line": 48,
+          "arguments": "items: list[Component], *, tolerance_mm=1e-06, glue=False, unify_tolerance_mm=1e-05, base_role=None, volume_rel=1e-08, unify_volume_rel=1e-09"
+        },
+        {
+          "name": "circular_pattern",
+          "kind": "FunctionDef",
+          "line": 87,
+          "arguments": "solid: cq.Solid, axis: Axis, count: int, *, total_angle_rad=2 * pi, separation_mm=1e-06"
+        },
+        {
+          "name": "assemble_unique",
+          "kind": "FunctionDef",
+          "line": 110,
+          "arguments": "items: list[Component], *, require_blade_shell_contact=True, tolerance_mm=1e-06"
+        },
+        {
+          "name": "fillet_two_end_rotor",
+          "kind": "FunctionDef",
+          "line": 127,
+          "arguments": "fused: cq.Solid, frame: Frame, *, low_radius_mm, high_radius_mm, expected_semantic_candidates: int, expected_low_edges: int, expected_high_edges: int, probe_mm=0.1, classification_tolerance_mm=1e-07"
+        },
+        {
+          "name": "extract_rounded_blade",
+          "kind": "FunctionDef",
+          "line": 154,
+          "arguments": "rounded: cq.Solid, shells: list[cq.Solid], *, tolerance_mm=1e-06"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.blades",
+      "file": "src/cadtoolbox/geometry/blades.py",
+      "sha256": "4bdb46246e94536b39934918ed7d0535884779338ab1fa8b6ed0ec92583fc7ac",
+      "exports": [
+        {
+          "name": "CircleLaw",
+          "kind": "ClassDef",
+          "line": 16,
+          "fields": [
+            "construction_radius_mm: float",
+            "center_radial_2_mm: float",
+            "branch: int"
+          ]
+        },
+        {
+          "name": "ThetaLaw",
+          "kind": "ClassDef",
+          "line": 38,
+          "fields": [
+            "r_min_mm: float",
+            "r_max_mm: float",
+            "theta_root_rad: float",
+            "theta_tip_rad: float",
+            "exponent: float = 1.35",
+            "linear_blend: float = 0.25"
+          ]
+        },
+        {
+          "name": "BladeResult",
+          "kind": "ClassDef",
+          "line": 60,
+          "fields": [
+            "solid: cq.Solid",
+            "centerline: cq.Wire",
+            "outline: cq.Wire",
+            "report: dict"
+          ]
+        },
+        {
+          "name": "build_radial_blade",
+          "kind": "FunctionDef",
+          "line": 67,
+          "arguments": "frame: Frame, axial_bounds_mm, radial_bounds_mm, thickness: Thickness, law: CircleLaw | ThetaLaw, *, samples: int=121, fit_tolerance_mm: float=0.02, centerline_bounds_mm=None"
+        },
+        {
+          "name": "extreme_chord_thickness",
+          "kind": "FunctionDef",
+          "line": 129,
+          "arguments": "solid: cq.Solid, frame: Frame, *, radius_tolerance_mm=1e-05"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.domains",
+      "file": "src/cadtoolbox/geometry/domains.py",
+      "sha256": "c4298b5bd077c613a6efaf104a0f562ab7ae24ddf4b564612158178b8b38f47f",
+      "exports": [
+        {
+          "name": "Domain",
+          "kind": "ClassDef",
+          "line": 12,
+          "fields": [
+            "shape: cq.Shape",
+            "spec: DomainSpec",
+            "report: dict"
+          ]
+        },
+        {
+          "name": "ClipResult",
+          "kind": "ClassDef",
+          "line": 18,
+          "fields": [
+            "parts: tuple[cq.Shape, ...]",
+            "report: dict"
+          ]
+        },
+        {
+          "name": "closed_profile",
+          "kind": "FunctionDef",
+          "line": 27,
+          "arguments": "points, *, mode='periodic_bspline', plane='XY', position=0, tolerance_mm=1e-07"
+        },
+        {
+          "name": "axisymmetric_channel",
+          "kind": "FunctionDef",
+          "line": 51,
+          "arguments": "wire: cq.Wire, frame: Frame, *, source: str, inner_wires=()"
+        },
+        {
+          "name": "projected_channel",
+          "kind": "FunctionDef",
+          "line": 66,
+          "arguments": "wire: cq.Wire, bounds_mm, frame: Frame, *, source: str, inner_wires=()"
+        },
+        {
+          "name": "material_domain",
+          "kind": "FunctionDef",
+          "line": 87,
+          "arguments": "shape: cq.Shape, frame: Frame, *, source: str"
+        },
+        {
+          "name": "trim_solid",
+          "kind": "FunctionDef",
+          "line": 123,
+          "arguments": "solid: cq.Solid, domain: Domain, *, tolerance_mm=1e-06"
+        },
+        {
+          "name": "trim_bspline_face",
+          "kind": "FunctionDef",
+          "line": 127,
+          "arguments": "face: cq.Face, domain: Domain, *, tolerance_mm=1e-06"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.io",
+      "file": "src/cadtoolbox/geometry/io.py",
+      "sha256": "413b3a9572da0511294f67e3a8a39b404748d025cc44d0467bda588375bd8b54",
+      "exports": [
+        {
+          "name": "source_info",
+          "kind": "FunctionDef",
+          "line": 16,
+          "arguments": "path: Path"
+        },
+        {
+          "name": "load_step",
+          "kind": "FunctionDef",
+          "line": 38,
+          "arguments": "path: str | Path, expected: ShapeExpectation | None=None"
+        },
+        {
+          "name": "export_step",
+          "kind": "FunctionDef",
+          "line": 61,
+          "arguments": "shape: cq.Shape, path: str | Path, expected: ShapeExpectation, policy: QualityPolicy | None=None, *, overwrite: bool=False"
+        },
+        {
+          "name": "ProfileResult",
+          "kind": "ClassDef",
+          "line": 106,
+          "fields": [
+            "wires: list[cq.Wire]",
+            "report: dict"
+          ]
+        },
+        {
+          "name": "load_dxf",
+          "kind": "FunctionDef",
+          "line": 114,
+          "arguments": "path: str | Path, *, input_unit: Unit | None=None, include_layers: list[str] | None=None, tolerance_mm: float=1e-06"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.measure",
+      "file": "src/cadtoolbox/geometry/measure.py",
+      "sha256": "3abaa40576201c2acb1ce98830bc7a639f60dcb030c4c23a1767d9a4dc8bbe3d",
+      "exports": [
+        {
+          "name": "axis_candidates",
+          "kind": "FunctionDef",
+          "line": 29,
+          "arguments": "shape: cq.Shape"
+        },
+        {
+          "name": "measure",
+          "kind": "FunctionDef",
+          "line": 53,
+          "arguments": "shape: cq.Shape, axis: Axis | None=None"
+        },
+        {
+          "name": "count_axis_cylinder_faces",
+          "kind": "FunctionDef",
+          "line": 84,
+          "arguments": "shape, axis, radius_mm, *, tolerance_mm=1e-05"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.parametric",
+      "file": "src/cadtoolbox/geometry/parametric.py",
+      "sha256": "c50ea3ea98d0a5a56d62e96b181707ac979034aab24335df1be7fb8583f5de77",
+      "exports": [
+        {
+          "name": "uv",
+          "kind": "FunctionDef",
+          "line": 17,
+          "arguments": "u, v"
+        },
+        {
+          "name": "edge_point",
+          "kind": "FunctionDef",
+          "line": 23,
+          "arguments": "edge, t, reverse=False"
+        },
+        {
+          "name": "RectangularBase",
+          "kind": "ClassDef",
+          "line": 29,
+          "fields": []
+        },
+        {
+          "name": "CoonsBase",
+          "kind": "ClassDef",
+          "line": 46,
+          "fields": []
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.quality",
+      "file": "src/cadtoolbox/geometry/quality.py",
+      "sha256": "1483d84cecfa3a059de7394aaba5b0b78b000c47dc3625afaf175ef3c1712fbf",
+      "exports": [
+        {
+          "name": "GeometryError",
+          "kind": "ClassDef",
+          "line": 17,
+          "fields": []
+        },
+        {
+          "name": "GeometryResult",
+          "kind": "ClassDef",
+          "line": 27,
+          "fields": [
+            "shape: cq.Shape",
+            "report: dict = field(default_factory=dict)",
+            "unit: str = 'mm'"
+          ]
+        },
+        {
+          "name": "integrated_volume",
+          "kind": "FunctionDef",
+          "line": 40,
+          "arguments": "solid: cq.Solid"
+        },
+        {
+          "name": "integrated_area",
+          "kind": "FunctionDef",
+          "line": 51,
+          "arguments": "shape: cq.Shape"
+        },
+        {
+          "name": "topology",
+          "kind": "FunctionDef",
+          "line": 60,
+          "arguments": "shape: cq.Shape"
+        },
+        {
+          "name": "validate_shape",
+          "kind": "FunctionDef",
+          "line": 89,
+          "arguments": "shape: cq.Shape, expected: ShapeExpectation, policy: QualityPolicy | None=None"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.rotor_junction",
+      "file": "src/cadtoolbox/geometry/rotor_junction.py",
+      "sha256": "bf5be774013158fe13145971ac3a9be9a291aaf39948a24f234165b733a591b4",
+      "exports": [
+        {
+          "name": "recognize_concave_junction_edges",
+          "kind": "FunctionDef",
+          "line": 20,
+          "arguments": "fused: cq.Solid, *, probe_mm: float=0.1, classification_tolerance_mm: float=1e-07"
+        },
+        {
+          "name": "split_junction_edges_by_x",
+          "kind": "FunctionDef",
+          "line": 69,
+          "arguments": "edges: list[cq.Edge], *, expected_low: int, expected_high: int"
+        },
+        {
+          "name": "apply_split_radius_fillet",
+          "kind": "FunctionDef",
+          "line": 92,
+          "arguments": "fused: cq.Solid, low_x_edges: list[cq.Edge], high_x_edges: list[cq.Edge], *, low_x_radius: float, high_x_radius: float"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.shared_faces",
+      "file": "src/cadtoolbox/geometry/shared_faces.py",
+      "sha256": "ea6551a72fd1c27518e9dd8bd07103f766dbb1e124702296b6840cb12baaabe4",
+      "exports": [
+        {
+          "name": "classify_edges",
+          "kind": "FunctionDef",
+          "line": 30,
+          "arguments": "face, target_corners: dict"
+        },
+        {
+          "name": "actual_corners",
+          "kind": "FunctionDef",
+          "line": 51,
+          "arguments": "face, target_corners: dict"
+        },
+        {
+          "name": "build_all_side_faces",
+          "kind": "FunctionDef",
+          "line": 106,
+          "arguments": "lower_face, upper_face, lower_targets: dict, upper_targets: dict, gap_tolerance: float=1e-05, filling_tolerance: float=1e-07"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.surface_fit",
+      "file": "src/cadtoolbox/geometry/surface_fit.py",
+      "sha256": "e008c6d68de2e387292add0870ade421388ab13a1e917ac94e25d46e606e5d4a",
+      "exports": [
+        {
+          "name": "FitConfig",
+          "kind": "ClassDef",
+          "line": 17,
+          "fields": [
+            "initial_u: int = 20",
+            "initial_v: int = 40",
+            "max_u: int = 160",
+            "max_v: int = 320",
+            "degree: int = 3",
+            "max_error_mm: float = 0.001",
+            "rms_error_mm: float = 0.0002",
+            "boundary_error_mm: float = 0.001",
+            "endpoint_error_mm: float = 1e-07"
+          ]
+        },
+        {
+          "name": "rotate_point",
+          "kind": "FunctionDef",
+          "line": 37,
+          "arguments": "p, axis: Axis, angle"
+        },
+        {
+          "name": "target_point",
+          "kind": "FunctionDef",
+          "line": 43,
+          "arguments": "base, field, axis, u, v"
+        },
+        {
+          "name": "independent_uv",
+          "kind": "FunctionDef",
+          "line": 46,
+          "arguments": "nu, nv, cap_u=None, cap_v=None"
+        },
+        {
+          "name": "fit_surface",
+          "kind": "FunctionDef",
+          "line": 55,
+          "arguments": "base, field, axis, config: FitConfig"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.theta_fields",
+      "file": "src/cadtoolbox/geometry/theta_fields.py",
+      "sha256": "c39b3f7bc8df08093c1717afe8892678210f2b50f9c25c1c16b5cbb3bcdc43a8",
+      "exports": [
+        {
+          "name": "factor",
+          "kind": "FunctionDef",
+          "line": 12,
+          "arguments": "unit"
+        },
+        {
+          "name": "value",
+          "kind": "FunctionDef",
+          "line": 18,
+          "arguments": "x, name"
+        },
+        {
+          "name": "unwrap",
+          "kind": "FunctionDef",
+          "line": 23,
+          "arguments": "values"
+        },
+        {
+          "name": "Field",
+          "kind": "ClassDef",
+          "line": 33,
+          "fields": []
+        },
+        {
+          "name": "FormulaField",
+          "kind": "ClassDef",
+          "line": 39,
+          "fields": []
+        },
+        {
+          "name": "SampleField",
+          "kind": "ClassDef",
+          "line": 70,
+          "fields": []
+        },
+        {
+          "name": "EndField",
+          "kind": "ClassDef",
+          "line": 88,
+          "fields": []
+        },
+        {
+          "name": "hermite",
+          "kind": "FunctionDef",
+          "line": 98,
+          "arguments": "xs, ys, t"
+        },
+        {
+          "name": "GridField",
+          "kind": "ClassDef",
+          "line": 104,
+          "fields": []
+        },
+        {
+          "name": "build_field",
+          "kind": "FunctionDef",
+          "line": 119,
+          "arguments": "config, base, axis"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.transforms",
+      "file": "src/cadtoolbox/geometry/transforms.py",
+      "sha256": "48eee4491b823843723fc545c91a205e891cfc089ff0e8e9b609ca04cd8af1f4",
+      "exports": [
+        {
+          "name": "transform_shape",
+          "kind": "FunctionDef",
+          "line": 7,
+          "arguments": "shape: cq.Shape, frame: Frame, *, to_local: bool=False"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.geometry.twisted_solid",
+      "file": "src/cadtoolbox/geometry/twisted_solid.py",
+      "sha256": "eb1623532c8e0122f1b73c8a9b3de13761a2fcac19fe6893565f1af1d91ff6cb",
+      "exports": [
+        {
+          "name": "SewConfig",
+          "kind": "ClassDef",
+          "line": 16,
+          "fields": [
+            "tolerances_mm: tuple = (1e-06, 1e-05, 0.0001, 0.001)",
+            "max_tolerance_mm: float = 0.001",
+            "gap_tolerance_mm: float = 1e-05",
+            "filling_tolerance_mm: float = 1e-07",
+            "loft_sections: int = 17",
+            "loft_curve_samples: int = 81"
+          ]
+        },
+        {
+          "name": "sew_faces",
+          "kind": "FunctionDef",
+          "line": 33,
+          "arguments": "faces, config: SewConfig"
+        },
+        {
+          "name": "loft_solid",
+          "kind": "FunctionDef",
+          "line": 52,
+          "arguments": "base, field, axis, config: SewConfig"
+        },
+        {
+          "name": "validate_solid_target",
+          "kind": "FunctionDef",
+          "line": 65,
+          "arguments": "solid, base, field, axis, fit: FitConfig"
+        },
+        {
+          "name": "build_twisted_solid",
+          "kind": "FunctionDef",
+          "line": 80,
+          "arguments": "base, field, axis: Axis, fit: FitConfig | None=None, sewing: SewConfig | None=None, *, allow_loft_fallback=False, construction='six_shared_faces', max_abs_theta_rad=pi, min_axis_radius_mm=0.1"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.raster.config",
+      "file": "src/cadtoolbox/raster/config.py",
+      "sha256": "17c2dfcf5efcb58b844ac33a5411db734b941c08f67ea9dcb26cbcc20f3aea7b",
+      "exports": [
+        {
+          "name": "number",
+          "kind": "FunctionDef",
+          "line": 7,
+          "arguments": "value, name, *, minimum=None, maximum=None, integer=False"
+        },
+        {
+          "name": "fields",
+          "kind": "FunctionDef",
+          "line": 16,
+          "arguments": "value, required, optional=()"
+        },
+        {
+          "name": "ImageConfig",
+          "kind": "ClassDef",
+          "line": 23,
+          "fields": [
+            "threshold: int = 64",
+            "foreground: str = 'dark'",
+            "require_single_interval_per_row: bool = True",
+            "minimum_foreground_rows: int = 20"
+          ]
+        },
+        {
+          "name": "GeometryConfig",
+          "kind": "ClassDef",
+          "line": 36,
+          "fields": [
+            "simplify_tolerance_px: float = 1.5",
+            "minimum_profile_area_mm2: float = 10"
+          ]
+        },
+        {
+          "name": "RegionConfig",
+          "kind": "ClassDef",
+          "line": 45,
+          "fields": [
+            "name: str",
+            "color_rgb: tuple[int, int, int]",
+            "tolerance: int = 0"
+          ]
+        },
+        {
+          "name": "CalibrationConfig",
+          "kind": "ClassDef",
+          "line": 57,
+          "fields": [
+            "mode: str",
+            "x_min: Parameter",
+            "x_max: Parameter",
+            "r_min: Parameter",
+            "r_max: Parameter"
+          ]
+        },
+        {
+          "name": "settings",
+          "kind": "FunctionDef",
+          "line": 95,
+          "arguments": "config"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.raster.primitives",
+      "file": "src/cadtoolbox/raster/primitives.py",
+      "sha256": "5fbd5de7c7c6de30cb4b221fb43f3ec2bd0c9350c41300492000d328d5c0f3ae",
+      "exports": [
+        {
+          "name": "PrimitiveExtractionConfig",
+          "kind": "ClassDef",
+          "line": 28,
+          "fields": [
+            "threshold: int | None = None",
+            "foreground: str = 'dark'",
+            "minimum_component_pixels: int = 12",
+            "minimum_chain_length_px: float = 12.0",
+            "line_max_rmse_px: float = 1.15",
+            "circle_max_rmse_px: float = 1.75",
+            "minimum_arc_degrees: float = 30.0",
+            "full_circle_degrees: float = 330.0",
+            "fallback_polyline_tolerance_px: float = 2.0",
+            "thinning_max_iterations: int = 200"
+          ]
+        },
+        {
+          "name": "LinePrimitive",
+          "kind": "ClassDef",
+          "line": 53,
+          "fields": [
+            "id: str",
+            "type: str",
+            "start_px: PixelPoint",
+            "end_px: PixelPoint",
+            "length_px: float",
+            "angle_deg: float",
+            "fit_rmse_px: float | None",
+            "confidence: float",
+            "source_point_count: int",
+            "source_chain_id: str = ''",
+            "fit_method: str = ''",
+            "fit_max_error_px: float | None = None",
+            "status: str = 'candidate'"
+          ]
+        },
+        {
+          "name": "CirclePrimitive",
+          "kind": "ClassDef",
+          "line": 70,
+          "fields": [
+            "id: str",
+            "type: str",
+            "center_px: PixelPoint",
+            "radius_px: float",
+            "fit_rmse_px: float | None",
+            "confidence: float",
+            "source_point_count: int",
+            "source_chain_id: str = ''",
+            "fit_method: str = ''",
+            "fit_max_error_px: float | None = None",
+            "status: str = 'candidate'"
+          ]
+        },
+        {
+          "name": "ArcPrimitive",
+          "kind": "ClassDef",
+          "line": 85,
+          "fields": [
+            "id: str",
+            "type: str",
+            "center_px: PixelPoint",
+            "radius_px: float",
+            "start_angle_deg: float",
+            "end_angle_deg: float",
+            "sweep_angle_deg: float",
+            "clockwise: bool",
+            "start_px: PixelPoint",
+            "end_px: PixelPoint",
+            "fit_rmse_px: float | None",
+            "confidence: float",
+            "source_point_count: int",
+            "source_chain_id: str = ''",
+            "fit_method: str = ''",
+            "fit_max_error_px: float | None = None",
+            "status: str = 'candidate'",
+            "endpoint_method: str = 'skeleton endpoints projected to fitted circle'",
+            "skeleton_sweep_angle_deg: float | None = None",
+            "support_component_pixel_count: int | None = None"
+          ]
+        },
+        {
+          "name": "PrimitiveExtractionResult",
+          "kind": "ClassDef",
+          "line": 112,
+          "fields": [
+            "image_path: Path",
+            "image_size_px: tuple[int, int]",
+            "threshold_used: int",
+            "foreground_pixel_count: int",
+            "skeleton_pixel_count: int",
+            "component_count: int",
+            "chain_count: int",
+            "primitives: tuple[Primitive, ...]",
+            "source_sha256: str",
+            "diagnostics: dict = field(default_factory=dict)"
+          ]
+        },
+        {
+          "name": "extract_primitives",
+          "kind": "FunctionDef",
+          "line": 698,
+          "arguments": "image_path: str | Path, config: PrimitiveExtractionConfig | None=None"
+        },
+        {
+          "name": "export_primitive_overlay",
+          "kind": "FunctionDef",
+          "line": 761,
+          "arguments": "result: PrimitiveExtractionResult, output_path: str | Path"
+        },
+        {
+          "name": "export_primitive_svg",
+          "kind": "FunctionDef",
+          "line": 825,
+          "arguments": "result: PrimitiveExtractionResult, output_path: str | Path"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.raster.profiles",
+      "file": "src/cadtoolbox/raster/profiles.py",
+      "sha256": "b925bc84ac502827ec6e13e3336a48a607ae847b501f4425c82cb034964d7b3c",
+      "exports": [
+        {
+          "name": "RasterProfile",
+          "kind": "ClassDef",
+          "line": 23,
+          "fields": [
+            "image_path: Path",
+            "image_size_px: tuple[int, int]",
+            "foreground_bbox_px: tuple[int, int, int, int]",
+            "foreground_pixel_count: int",
+            "foreground_rows: int",
+            "points_px: tuple[PixelPoint, ...]",
+            "points_xr_mm: tuple[XRPoint, ...]",
+            "area_mm2: float",
+            "source_sha256: str",
+            "diagnostics: dict = field(default_factory=dict)"
+          ]
+        },
+        {
+          "name": "sha256_file",
+          "kind": "FunctionDef",
+          "line": 39,
+          "arguments": "path: Path"
+        },
+        {
+          "name": "extract_raster_profile",
+          "kind": "FunctionDef",
+          "line": 111,
+          "arguments": "image_path: str | Path, image_config: ImageConfig, calibration: CalibrationConfig, geometry: GeometryConfig"
+        },
+        {
+          "name": "export_overlay",
+          "kind": "FunctionDef",
+          "line": 214,
+          "arguments": "profile: RasterProfile, output_path: str | Path"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.raster.regions",
+      "file": "src/cadtoolbox/raster/regions.py",
+      "sha256": "df402a706f48a72604f9c28c5cbcd992452aaf824bafc79e3bc246de429cbd23",
+      "exports": [
+        {
+          "name": "extract_three_region_profiles",
+          "kind": "FunctionDef",
+          "line": 112,
+          "arguments": "image_path: str | Path, region_configs: tuple[RegionConfig, ...], calibration: CalibrationConfig, geometry: GeometryConfig, minimum_rows: int=20"
+        },
+        {
+          "name": "export_three_region_overlay",
+          "kind": "FunctionDef",
+          "line": 269,
+          "arguments": "profiles: dict[str, RasterProfile], output_path: str | Path"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.solver.model",
+      "file": "src/cadtoolbox/solver/model.py",
+      "sha256": "f320d6e5a12d7cb352b38cd0d44c55e3b2a0608e0b646c75037f524f9543dbe6",
+      "exports": [
+        {
+          "name": "number",
+          "kind": "FunctionDef",
+          "line": 7,
+          "arguments": "value, name, positive=False"
+        },
+        {
+          "name": "xy",
+          "kind": "FunctionDef",
+          "line": 12,
+          "arguments": "value, name"
+        },
+        {
+          "name": "provenance",
+          "kind": "FunctionDef",
+          "line": 17,
+          "arguments": "value, name"
+        },
+        {
+          "name": "normalize_sketch",
+          "kind": "FunctionDef",
+          "line": 22,
+          "arguments": "spec"
+        },
+        {
+          "name": "dimension_mm",
+          "kind": "FunctionDef",
+          "line": 82,
+          "arguments": "constraint"
+        },
+        {
+          "name": "drive_dimensions",
+          "kind": "FunctionDef",
+          "line": 85,
+          "arguments": "spec, updates"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.solver.sketch",
+      "file": "src/cadtoolbox/solver/sketch.py",
+      "sha256": "2be10c62170574305c4dbc8f90b8f763c4697a477df77fcb3d49ca8f3549762d",
+      "exports": [
+        {
+          "name": "residuals",
+          "kind": "FunctionDef",
+          "line": 9,
+          "arguments": "spec, result, tolerance"
+        },
+        {
+          "name": "solve_sketch",
+          "kind": "FunctionDef",
+          "line": 34,
+          "arguments": "spec, *, residual_tolerance_mm=1e-07, timeout_seconds=30"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.solver.worker",
+      "file": "src/cadtoolbox/solver/worker.py",
+      "sha256": "d29c3c313ea35ddd507d1d06bc765bcc1c1effda7f53a01926bed0a3e5108839",
+      "exports": [
+        {
+          "name": "execute",
+          "kind": "FunctionDef",
+          "line": 7,
+          "arguments": "spec"
+        },
+        {
+          "name": "main",
+          "kind": "FunctionDef",
+          "line": 48,
+          "arguments": ""
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.workflows.checkpoints",
+      "file": "src/cadtoolbox/workflows/checkpoints.py",
+      "sha256": "ecbf3696e1cbdc7c001bb61499d2d904907e68bb8271ccfa1fa23ec12ca3be34",
+      "exports": [
+        {
+          "name": "export_checkpoint",
+          "kind": "FunctionDef",
+          "line": 16,
+          "arguments": "shape, path: Path, expected: ShapeExpectation, *, source_policy=False"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.workflows.io_demo",
+      "file": "src/cadtoolbox/workflows/io_demo.py",
+      "sha256": "d19483b475b1b3d21226d11b5c4bef7a0263ed5169884dc67b7b8a340ef8d099",
+      "exports": [
+        {
+          "name": "run_io_demo",
+          "kind": "FunctionDef",
+          "line": 12,
+          "arguments": "directory: Path"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.workflows.raster",
+      "file": "src/cadtoolbox/workflows/raster.py",
+      "sha256": "3c6604c33ce8187aab5fcac06ebae72d4885a1948ccb2442822653eb84e0c7f8",
+      "exports": [
+        {
+          "name": "polygon_reference",
+          "kind": "FunctionDef",
+          "line": 24,
+          "arguments": "points"
+        },
+        {
+          "name": "interfaces",
+          "kind": "FunctionDef",
+          "line": 33,
+          "arguments": "shapes"
+        },
+        {
+          "name": "run_raster",
+          "kind": "FunctionDef",
+          "line": 45,
+          "arguments": "config_path, output, *, candidates=False, progress=None"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.workflows.rotor",
+      "file": "src/cadtoolbox/workflows/rotor.py",
+      "sha256": "4dc126e60745b9f804c1c0443f5769d8845e28437608574b9f3fdb1c08d0b017",
+      "exports": [
+        {
+          "name": "run_rotor",
+          "kind": "FunctionDef",
+          "line": 21,
+          "arguments": "config_path: Path, output: Path, *, progress=None"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.workflows.solved_profile",
+      "file": "src/cadtoolbox/workflows/solved_profile.py",
+      "sha256": "a15a6f6061ba8ea7c02a3a9f634bb25e4945c5a9603082ba76fe0594be71ff5c",
+      "exports": [
+        {
+          "name": "build_profile",
+          "kind": "FunctionDef",
+          "line": 19,
+          "arguments": "solved, geometry"
+        },
+        {
+          "name": "export_dxf",
+          "kind": "FunctionDef",
+          "line": 60,
+          "arguments": "path, geometry_report"
+        },
+        {
+          "name": "run_solved_profile",
+          "kind": "FunctionDef",
+          "line": 68,
+          "arguments": "config_path, output, *, progress=None"
+        }
+      ]
+    },
+    {
+      "module": "cadtoolbox.workflows.surfaces",
+      "file": "src/cadtoolbox/workflows/surfaces.py",
+      "sha256": "7d39d4ff4f68ba4275ffdd192cf598353db1b7990469a020046be30e6f4561be",
+      "exports": [
+        {
+          "name": "checked_reference",
+          "kind": "FunctionDef",
+          "line": 17,
+          "arguments": "spec, config_path"
+        },
+        {
+          "name": "run_surface_blade",
+          "kind": "FunctionDef",
+          "line": 26,
+          "arguments": "config_path, output, *, progress=None"
+        }
+      ]
+    }
+  ]
+}

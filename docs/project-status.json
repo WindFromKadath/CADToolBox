@@ -1,0 +1,682 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-03",
+  "version": "0.1.0",
+  "scope": "Public tool and method capabilities; verified states describe the explicitly listed scope, not unrestricted feature support",
+  "counts": {
+    "scoped_verified_tools": 14,
+    "partially_ported_tools": 2,
+    "methods": 12,
+    "method_cases": 15,
+    "last_runtime_regression_tests": 132
+  },
+  "runtime_regression_date": "2026-10-03",
+  "verification_evidence_distribution": "Local engineering proofs are not distributed; each checkout runs its own synthetic regression",
+  "tools": [
+    {
+      "id": "T001",
+      "name": "STEP 读取与导出",
+      "implementation_status": "verified",
+      "inputs": "STEP 文件、预期结果类型",
+      "outputs": "几何对象与 I/O 报告",
+      "boundaries": [
+        "CadQuery 2.8 后端已锁定，STEP 内部单位为 mm",
+        "装配标签/参数历史不在几何 I/O 范围",
+        "单 Face 的单面壳包装仅在显式 Face 要求下解包，并报告原根类型"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/io.py",
+        "src/cadtoolbox/cli.py"
+      ],
+      "verified_scope": "STEP 单 Face、单 Solid、明确数量的 Solid Compound；文件单位转换为 mm；原子导出和回读",
+      "verification_tests": [
+        "tests/test_contracts.py",
+        "tests/test_geometry.py"
+      ]
+    },
+    {
+      "id": "T002",
+      "name": "轴与几何测量",
+      "implementation_status": "verified",
+      "inputs": "几何对象、显式轴或检测策略",
+      "outputs": "轴候选、半径、长度、体积、面积",
+      "boundaries": [
+        "自动轴仅为解析圆柱候选，不代表已确认设计轴",
+        "没有圆柱面时必须提供显式轴，不用包围盒猜测",
+        "半径候选不自动等同于内外径"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/measure.py",
+        "src/cadtoolbox/cli.py"
+      ],
+      "verified_scope": "显式任意轴、解析圆柱轴候选、轴向长度、解析半径候选、面积与体积；不自动推断通用内外径",
+      "verification_tests": [
+        "tests/test_contracts.py",
+        "tests/test_geometry.py"
+      ]
+    },
+    {
+      "id": "T003",
+      "name": "参数来源与尺寸校验",
+      "implementation_status": "verified",
+      "inputs": "参数值、单位、来源、状态、公差",
+      "outputs": "结构化参数与问题列表",
+      "boundaries": [
+        "保留 confirmed/derived/assumed/missing/conflicting",
+        "无完整尺寸链、OCR 或约束求解器；本工具只校验参数合同和显式范围"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py"
+      ],
+      "verified_scope": "有限数值、单位换算、来源状态、尺寸上下界；假设值默认不允许参与已确认尺寸",
+      "verification_tests": [
+        "tests/test_contracts.py",
+        "tests/test_geometry.py"
+      ]
+    },
+    {
+      "id": "T004",
+      "name": "DXF 与真实曲线轮廓",
+      "implementation_status": "ported",
+      "inputs": "DXF 或带连接顺序的几何实体",
+      "outputs": "闭合 Wire 与曲线报告",
+      "boundaries": [
+        "现有 LINE-only 实现不能称为任意 DXF",
+        "圆弧不能仅取端点转成多边形"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/geometry/io.py"
+      ],
+      "implemented_subset": "闭合 XY DXF：LINE、ARC、CIRCLE、2D POLYLINE/LWPOLYLINE bulge、带控制点 SPLINE、ELLIPSE；转换逐项检查；四边界 DXF 接入 Coons/扭转流程，需一条闭合四边 Wire 和明确角点锚点",
+      "remaining_scope": [
+        "参数实体输入封装",
+        "跨图层嵌套孔解释"
+      ]
+    },
+    {
+      "id": "T005",
+      "name": "旋转与拉伸构造",
+      "implementation_status": "verified",
+      "inputs": "闭合轮廓、轴、范围",
+      "outputs": "Face/Solid 及检查结果",
+      "boundaries": [
+        "显式区分旋转子午轮廓和 YZ 投影拉伸"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/domains.py",
+        "src/cadtoolbox/geometry/transforms.py"
+      ],
+      "implemented_subset": "闭合有序点/周期 B-Spline 子午轮廓旋转，精确 YZ Wire 拉伸，任意轴右手坐标",
+      "verified_scope": "闭合有序点/周期 B-Spline 子午轮廓旋转，精确 YZ Wire 拉伸，任意轴右手坐标",
+      "remaining_scope": [],
+      "verification_tests": [
+        "tests/test_rotor_tools.py"
+      ]
+    },
+    {
+      "id": "T006",
+      "name": "四边界曲面与封闭",
+      "implementation_status": "verified",
+      "inputs": "四条有序边界、采样及误差配置",
+      "outputs": "曲面或闭合实体与构造报告",
+      "boundaries": [
+        "边界对应关系需验证",
+        "放样备用策略改变几何时必须记录"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/io.py",
+        "src/cadtoolbox/geometry/transforms.py",
+        "src/cadtoolbox/geometry/parametric.py",
+        "src/cadtoolbox/geometry/theta_fields.py",
+        "src/cadtoolbox/geometry/shared_faces.py",
+        "src/cadtoolbox/geometry/surface_fit.py",
+        "src/cadtoolbox/geometry/twisted_solid.py",
+        "src/cadtoolbox/workflows/surfaces.py",
+        "src/cadtoolbox/cli.py"
+      ],
+      "implemented_subset": "局部 XY 四边真实曲线、明确角点锚点、Coons UV 映射、任意刚体坐标、共享六面封闭；明确许可的逐 U 多截面放样与误差复验",
+      "verified_scope": "局部 XY 四边真实曲线、明确角点锚点、Coons UV 映射、任意刚体坐标、共享六面封闭；明确许可的逐 U 多截面放样与误差复验",
+      "remaining_scope": [
+        "任意空间四边曲面与非平面底面的参数化未迁移",
+        "全局自交证明未实现"
+      ],
+      "verification_tests": [
+        "tests/test_surfaces.py"
+      ]
+    },
+    {
+      "id": "T007",
+      "name": "圆弧与角度律叶片",
+      "implementation_status": "verified",
+      "inputs": "中线规律、半径范围、厚度定义、轴向范围",
+      "outputs": "中线、轮廓、叶片实体",
+      "boundaries": [
+        "弧长、弦长、法向厚度必须分开"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/blades.py",
+        "src/cadtoolbox/geometry/transforms.py"
+      ],
+      "implemented_subset": "两圆交点中线、两种分支、theta(r) 角度律、弧长/弦长总厚度、独立侧线拟合预算",
+      "verified_scope": "两圆交点中线、两种分支、theta(r) 角度律、弧长/弦长总厚度、独立侧线拟合预算",
+      "remaining_scope": [
+        "法向厚度偏移未实现"
+      ],
+      "verification_tests": [
+        "tests/test_rotor_tools.py"
+      ]
+    },
+    {
+      "id": "T008",
+      "name": "二维扭转场叶片",
+      "implementation_status": "verified",
+      "inputs": "可参数化底面、theta(u,v)、拟合预算",
+      "outputs": "叶片实体与拟合/验证报告",
+      "boundaries": [
+        "step_face 未实现",
+        "局部正则性检查不代表全局自交检查"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/io.py",
+        "src/cadtoolbox/geometry/transforms.py",
+        "src/cadtoolbox/geometry/parametric.py",
+        "src/cadtoolbox/geometry/theta_fields.py",
+        "src/cadtoolbox/geometry/shared_faces.py",
+        "src/cadtoolbox/geometry/surface_fit.py",
+        "src/cadtoolbox/geometry/twisted_solid.py",
+        "src/cadtoolbox/workflows/surfaces.py",
+        "src/cadtoolbox/cli.py"
+      ],
+      "implemented_subset": "矩形环带/四边界 DXF 底面；公式、径向 B-Spline 样本、两端线性/平滑规律、非均匀 C1 网格；预算内独立拟合、实体与 STEP 回读目标误差检查",
+      "verified_scope": "矩形环带/四边界 DXF 底面；公式、径向 B-Spline 样本、两端线性/平滑规律、非均匀 C1 网格；预算内独立拟合、实体与 STEP 回读目标误差检查",
+      "remaining_scope": [
+        "任意 STEP 底面仍明确报错",
+        "全局自交证明、零角跨越/退化与法向等厚偏移未支持"
+      ],
+      "verification_tests": [
+        "tests/test_surfaces.py"
+      ]
+    },
+    {
+      "id": "T009",
+      "name": "流道域构造与裁剪",
+      "implementation_status": "verified",
+      "inputs": "曲面或实体、明确类型的允许域",
+      "outputs": "全部保留分量与面积/体积报告",
+      "boundaries": [
+        "壳体材料、旋转流道、投影域不等价",
+        "空结果及多分量必须显式处理"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/domains.py"
+      ],
+      "implemented_subset": "轴对称/投影/材料域分开构造，Face/Solid 求交保留全部分量及空结果，B-Spline 支持面不重拟合",
+      "verified_scope": "轴对称/投影/材料域分开构造，Face/Solid 求交保留全部分量及空结果，B-Spline 支持面不重拟合",
+      "remaining_scope": [],
+      "verification_tests": [
+        "tests/test_rotor_tools.py"
+      ]
+    },
+    {
+      "id": "T010",
+      "name": "连接边识别与圆角",
+      "implementation_status": "verified",
+      "inputs": "实体、边选择策略、各组圆角半径",
+      "outputs": "圆角实体与选择证据",
+      "boundaries": [
+        "几何圆角操作可复用；自动边识别依赖模型特征",
+        "固定探测尺度和期望边数需参数化"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/rotor_junction.py",
+        "src/cadtoolbox/geometry/assembly.py"
+      ],
+      "implemented_subset": "两端转子限定的 EXTRUSION-解析壳体内凹边识别、严格候选数、两端不同半径圆角",
+      "verified_scope": "两端转子限定的 EXTRUSION-解析壳体内凹边识别、严格候选数、两端不同半径圆角",
+      "remaining_scope": [
+        "历史逐步 STEP 回读链路未通过；验证范围仅为已配置的内存流程"
+      ],
+      "verification_tests": [
+        "tests/test_rotor_tools.py"
+      ]
+    },
+    {
+      "id": "T011",
+      "name": "阵列与唯一组件融合",
+      "implementation_status": "verified",
+      "inputs": "独立叶片、壳体、轴、数量、公差",
+      "outputs": "多实体装配或融合实体",
+      "boundaries": [
+        "不能把融合失败当作完整成功",
+        "避免重复融合带壳体的整转子副本"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/assembly.py"
+      ],
+      "implemented_subset": "任意显式轴阵列、全部相对节距距离、全部叶片与壳体接触、唯一组件融合、部分融合显式失败、同域面整理体积门槛",
+      "verified_scope": "任意显式轴阵列、全部相对节距距离、全部叶片与壳体接触、唯一组件融合、部分融合显式失败、同域面整理体积门槛",
+      "remaining_scope": [
+        "历史逐步 STEP 回读链路未通过；验证范围仅为已配置的内存流程"
+      ],
+      "verification_tests": [
+        "tests/test_rotor_tools.py"
+      ]
+    },
+    {
+      "id": "T012",
+      "name": "质量检查与 STEP 回读",
+      "implementation_status": "verified",
+      "inputs": "几何、任务期望、误差策略、导出设置",
+      "outputs": "拓扑/尺寸/回读报告",
+      "boundaries": [
+        "期望单实体或多实体由任务指定",
+        "不得静默放宽容差"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/io.py",
+        "src/cadtoolbox/cli.py"
+      ],
+      "verified_scope": "按 Face/Solid/Compound 检查拓扑、实体数量、闭合、退化边策略，回读比较体积/面积/包围盒",
+      "verification_tests": [
+        "tests/test_contracts.py",
+        "tests/test_geometry.py"
+      ]
+    },
+    {
+      "id": "T013",
+      "name": "基础二维约束求解",
+      "implementation_status": "verified",
+      "inputs": "实体、约束、初值与定位策略",
+      "outputs": "求解坐标、实际状态、剩余自由度",
+      "boundaries": [
+        "AutoGenerator 计数估算不能作为求解结果",
+        "slvs 全局草图状态需隔离"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/solver/model.py",
+        "src/cadtoolbox/solver/worker.py",
+        "src/cadtoolbox/solver/sketch.py",
+        "src/cadtoolbox/workflows/solved_profile.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/io.py",
+        "src/cadtoolbox/geometry/transforms.py",
+        "src/cadtoolbox/cli.py"
+      ],
+      "implemented_subset": "独立进程内 slvs 3.2 真求解：2D 点/线/圆、固定 datum、重合、水平/竖直、点距、半径、等长、平行/垂直；原生 DOF/标志/冲突 ID 与独立残差；改尺寸约束驱动 CAD/DXF",
+      "verified_scope": "独立进程内 slvs 3.2 真求解：2D 点/线/圆、固定 datum、重合、水平/竖直、点距、半径、等长、平行/垂直；原生 DOF/标志/冲突 ID 与独立残差；改尺寸约束驱动 CAD/DXF",
+      "remaining_scope": [
+        "圆弧、相切、对称、完整来源圆槽/倒角板及 AutoGenerator 全语义编译器未迁移",
+        "多解分支由显式初始猜值选择；没有全局唯一解证明",
+        "同一点多个不同 WHERE_DRAGGED datum 明确拒绝；欠约束、冗余、冲突与未收敛不允许生成几何"
+      ],
+      "verification_tests": [
+        "tests/test_solver.py"
+      ]
+    },
+    {
+      "id": "T014",
+      "name": "受限图像轮廓建模",
+      "implementation_status": "verified",
+      "inputs": "单色/三色图片、显式尺寸标定",
+      "outputs": "轮廓及区域旋转体",
+      "boundaries": [
+        "按行单区间等输入条件必须保留",
+        "没有尺寸 OCR 或通用图纸语义"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/raster/config.py",
+        "src/cadtoolbox/raster/profiles.py",
+        "src/cadtoolbox/workflows/raster.py",
+        "src/cadtoolbox/cli.py",
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/io.py",
+        "src/cadtoolbox/raster/regions.py",
+        "src/cadtoolbox/geometry/domains.py",
+        "src/cadtoolbox/geometry/transforms.py",
+        "pyproject.toml",
+        "uv.lock",
+        "configs/raster-single-case.json",
+        "configs/raster-three-regions-case.json"
+      ],
+      "implemented_subset": "单色 bbox 标定、三色相邻共享边界、单区间/来源参数门禁、任意轴旋转、各区域严格 STEP 回读和重叠/接触检查",
+      "verified_scope": "单色 bbox 标定、三色相邻共享边界、单区间/来源参数门禁、任意轴旋转、各区域严格 STEP 回读和重叠/接触检查",
+      "remaining_scope": [
+        "通用图纸语义、OCR、尺寸链、实体拓扑确认未实现"
+      ],
+      "verification_tests": [
+        "tests/test_raster.py"
+      ]
+    },
+    {
+      "id": "T015",
+      "name": "图像候选基元提取",
+      "implementation_status": "verified",
+      "inputs": "图片、阈值与拟合参数",
+      "outputs": "像素直线/圆/圆弧候选及置信信息",
+      "boundaries": [
+        "尚未连接约束或 STEP 生成",
+        "连接拓扑、物理标定与确认需要新增"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/raster/config.py",
+        "src/cadtoolbox/raster/profiles.py",
+        "src/cadtoolbox/workflows/raster.py",
+        "src/cadtoolbox/cli.py",
+        "src/cadtoolbox/contracts.py",
+        "src/cadtoolbox/geometry/quality.py",
+        "src/cadtoolbox/geometry/io.py",
+        "src/cadtoolbox/raster/primitives.py",
+        "pyproject.toml",
+        "uv.lock",
+        "configs/raster-primitives-case.json"
+      ],
+      "implemented_subset": "二值/自动 Otsu、显式小组件过滤、收敛骨架、像素线/圆/弧/RDP 候选及真实残差；JSON/PNG/SVG 保留未确认状态",
+      "verified_scope": "二值/自动 Otsu、显式小组件过滤、收敛骨架、像素线/圆/弧/RDP 候选及真实残差；JSON/PNG/SVG 保留未确认状态",
+      "remaining_scope": [
+        "候选连接到约束/STEP、物理标定、尺寸语义确认未实现"
+      ],
+      "verification_tests": [
+        "tests/test_raster.py"
+      ]
+    },
+    {
+      "id": "T016",
+      "name": "报告与诊断可视化",
+      "implementation_status": "ported",
+      "inputs": "结构化报告、可追溯参数、几何摘要",
+      "outputs": "诊断图片与机器可读报告",
+      "boundaries": [
+        "裁图坐标是人工配置",
+        "保留失败与待验证状态"
+      ],
+      "implementation_files": [
+        "src/cadtoolbox/cli.py",
+        "scripts/verify_migration.py",
+        "src/cadtoolbox/workflows/raster.py",
+        "src/cadtoolbox/raster/profiles.py",
+        "src/cadtoolbox/raster/regions.py",
+        "src/cadtoolbox/raster/primitives.py"
+      ],
+      "implemented_subset": "JSON 诊断、参数/像素来源、输入哈希、失败证据及轮廓/候选 PNG、骨架图和 SVG",
+      "remaining_scope": [
+        "交互可视化及历史报告格式的其余部分"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "id": "M001",
+      "name": "坐标、单位与旋向对齐",
+      "summary": "保留轴点、方向、原点、局部平面、单位和旋向；通过明确变换连接工具",
+      "assumptions": [
+        "内部 mm，局部坐标 (轴向、径向1、径向2)，右手系；角度为弧度"
+      ],
+      "failure_modes": [
+        "X/Z 轴混用",
+        "单位字段存在但未应用"
+      ],
+      "verification_plan": [
+        "同一几何经刚体变换后体积不变",
+        "毫米与其他单位输入对应同一物理尺寸"
+      ],
+      "validation_status": "verified_subset"
+    },
+    {
+      "id": "M002",
+      "name": "厚度定义对比",
+      "summary": "弧长方式 delta=t/(2r)；弦长方式 delta=asin(t/(2r))；法向方式沿中线法线偏移。先明确 t 是否为总厚度",
+      "assumptions": [
+        "r>0，t 是总厚度",
+        "弦长 t<=2r，t=2r 是数学边界，不保证后续叶片建模可用"
+      ],
+      "failure_modes": [
+        "把不同厚度都命名为 thickness",
+        "角度场被误当作法向等厚偏移"
+      ],
+      "verification_plan": [
+        "r=100,t=10 时比较两种角度与弦长",
+        "独立测量法向厚度与周向厚度"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "弧长与弦长公式、边界与区别；法向厚度只定义合同，尚未实现曲面偏移"
+    },
+    {
+      "id": "M003",
+      "name": "圆弧中线与交点构造",
+      "summary": "利用构造圆与轴心圆交点确定进出口；分支控制旋向并计算叶片角",
+      "assumptions": [
+        "圆相交",
+        "中心偏距非零",
+        "选定交点分支"
+      ],
+      "failure_modes": [
+        "无交点",
+        "错误分支或长短弧"
+      ],
+      "verification_plan": [
+        "端点分别位于目标半径和构造圆",
+        "左右分支镜像且弧长一致"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "两圆交点与左右分支独立参照；来源转子已按 E004 采纳的内存流程验收，不证明其它未测试场景"
+    },
+    {
+      "id": "M004",
+      "name": "theta(r) 与 theta(u,v) 规律",
+      "summary": "保留公式、径向样本、两端规律和二维网格；按角度场旋转基面再拟合",
+      "assumptions": [
+        "底面有明确参数域",
+        "角度单位明确",
+        "避开轴奇点"
+      ],
+      "failure_modes": [
+        "角度跳变",
+        "局部退化或未检测自交"
+      ],
+      "verification_plan": [
+        "端点与样本规律一致",
+        "拟合误差独立采样",
+        "变化两端角度验证轴向插值"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "theta(r) 见 E004；theta(u,v) 四种场、精确节点、独立拟合、两端变化与实际实体/回读误差见 E005；非全局自交证明"
+    },
+    {
+      "id": "M005",
+      "name": "四边界 Coons 与共享边界封闭",
+      "summary": "用四条有序边界构造网格；侧面复用真实边，减少独立拟合造成的缝隙",
+      "assumptions": [
+        "四边拓扑匹配",
+        "方向一致"
+      ],
+      "failure_modes": [
+        "边界重排错误",
+        "缝合无效",
+        "备用放样改变形状"
+      ],
+      "verification_plan": [
+        "边界插值与角点一致",
+        "自由边数和闭合检查",
+        "构造方法与误差写入报告"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "真实 ARC/B-Spline 四边 Coons、显式角点、共享六面、倾斜轴解析体积、真实 DXF 与明确许可放样的目标复验"
+    },
+    {
+      "id": "M006",
+      "name": "在原支持曲面上裁剪",
+      "summary": "以允许域实体求交，保留原 B-Spline 支持曲面以及所有有效裁剪分量",
+      "assumptions": [
+        "允许域类型和坐标明确"
+      ],
+      "failure_modes": [
+        "用包围盒代替真实流道",
+        "丢弃多连通分量",
+        "把面求交当成闭合实体"
+      ],
+      "verification_plan": [
+        "保留分量位于允许域",
+        "支持曲面类型保持",
+        "面积/体积变化符合独立参照"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "面和实体求交的多分量/空结果，以及保留 B-Spline 支持面"
+    },
+    {
+      "id": "M007",
+      "name": "先单片圆角再提取与阵列",
+      "summary": "单叶片与壳体融合、识别连接边并圆角，再减去壳体提取独立叶片，最后阵列",
+      "assumptions": [
+        "连接边语义适用于目标模型",
+        "减去壳体后为预期叶片"
+      ],
+      "failure_modes": [
+        "固定边数不适用于新模型",
+        "相邻叶片干涉",
+        "圆角失败被忽略"
+      ],
+      "verification_plan": [
+        "独立叶片有效",
+        "接触壳体且相邻叶片有间隙",
+        "两端圆角符合配置"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "已采纳内存流程完成单片圆角、提取、13 片阵列及严格最终回读；历史逐步回读链路未通过"
+    },
+    {
+      "id": "M008",
+      "name": "唯一组件融合及修复边界",
+      "summary": "融合唯一壳体和独立叶片；同域面统一、clean/fix 是记录明确的处理策略",
+      "assumptions": [
+        "输入组件和公差可追溯"
+      ],
+      "failure_modes": [
+        "重复壳体副本造成重叠",
+        "无效实体仅凭导出成功通过",
+        "过大容差改变几何"
+      ],
+      "verification_plan": [
+        "融合后期望实体数",
+        "处理前后体积与拓扑对比",
+        "STEP 回读与外表面检查"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "独立并集体积、唯一组件、重复/部分融合及来源 R200 单外面；案例体积容差 1e-7，经用户采纳"
+    },
+    {
+      "id": "M009",
+      "name": "几何有效与需求正确分开验收",
+      "summary": "拓扑、尺寸、拟合误差、实体数量和回读误差分别检查；已生成文件不等于通过",
+      "assumptions": [
+        "每个任务有明确期望"
+      ],
+      "failure_modes": [
+        "只检查 isValid",
+        "把报告生成当作成功",
+        "统一强制所有任务为单实体"
+      ],
+      "verification_plan": [
+        "正常/边界/失败案例",
+        "独立尺寸或解析参照",
+        "失败不返回完整成功"
+      ],
+      "validation_status": "verified_subset"
+    },
+    {
+      "id": "M010",
+      "name": "图像先产出候选再确认参数",
+      "summary": "像素基元、连接关系、物理标定和尺寸语义分阶段；保留候选及来源，确认后进入几何流程",
+      "assumptions": [
+        "受控轮廓原型可用",
+        "通用尺寸 OCR 尚未实现"
+      ],
+      "failure_modes": [
+        "像素尺寸直接当毫米",
+        "将线条识别当完整图纸理解"
+      ],
+      "verification_plan": [
+        "已知尺寸标定案例",
+        "断线与文字干扰案例",
+        "不确定候选保持待确认"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "来源单色/三色标定轮廓与严格几何；像素候选待确认门禁、断线/文字/参数失败；无通用语义/OCR"
+    },
+    {
+      "id": "M011",
+      "name": "实际约束求解替代计数估算",
+      "summary": "参数模型映射到求解器；返回真实状态并用求解后坐标构造轮廓",
+      "assumptions": [
+        "先覆盖已验证基本实体/约束",
+        "求解会话需隔离"
+      ],
+      "failure_modes": [
+        "约束条数与方程秩混淆",
+        "solve 结果不驱动几何",
+        "全局草图被并发覆盖"
+      ],
+      "verification_plan": [
+        "欠约束/冲突/正常案例",
+        "改变尺寸后验证几何随求解变化",
+        "确认定位条件与剩余自由度"
+      ],
+      "validation_status": "verified_subset",
+      "verification_scope": "真实原生标志/自由度/冲突 ID 与独立残差；正常、欠约束、冲突、冗余、约束驱动系列件及四孔 CAD/STEP/DXF；非完整语义编译器"
+    },
+    {
+      "id": "M012",
+      "name": "参数来源、推导与假设",
+      "summary": "记录 confirmed/derived/assumed/missing/conflicting、来源、公差和原始标注；推导链与人工补充可回查",
+      "assumptions": [
+        "状态与确认人不得由 AI 虚构"
+      ],
+      "failure_modes": [
+        "文档声明替代源码证据",
+        "猜测参数默认 confirmed",
+        "作者理解被 AI 代写"
+      ],
+      "verification_plan": [
+        "缺失或冲突保持显式状态",
+        "沿一个参数追溯输入到尺寸检查"
+      ],
+      "validation_status": "verified_subset"
+    }
+  ],
+  "publication": {
+    "remote": "https://github.com/WindFromKadath/CADToolBox",
+    "visibility": "PUBLIC",
+    "license": "MIT",
+    "default_branch": "main",
+    "internal_records_distributed": false
+  },
+  "privacy_tool": {
+    "source": "Obsidian-AI协作与项目开发 / 02-隐私与发布 / tools / Invoke-PrivacyCheck.ps1",
+    "sha256": "7782d5b5c71c967d26e4b7ebecc6f6a7a7d44b931be4fff79d23805b072721fc",
+    "hooks_enabled": false,
+    "specialist_secret_scanner": "not_installed",
+    "distributed_sha256": "fd78757f2cb71d3f05d43fdbc84ec9b5cb482e2f85e18c1423778b089c069c78",
+    "adaptation": "Equivalent UNC regex construction avoids false positive when scanning the checker itself; original expression and detection gates retained."
+  }
+}

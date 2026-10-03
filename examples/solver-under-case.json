@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "unit": "mm",
+  "sketch": {
+    "schema_version": 1,
+    "unit": "mm",
+    "points": [
+      {
+        "id": "BL",
+        "initial_mm": [
+          2,
+          3
+        ]
+      },
+      {
+        "id": "BR",
+        "initial_mm": [
+          72,
+          4
+        ]
+      },
+      {
+        "id": "TR",
+        "initial_mm": [
+          75,
+          46
+        ]
+      },
+      {
+        "id": "TL",
+        "initial_mm": [
+          -1,
+          42
+        ]
+      }
+    ],
+    "lines": [
+      {
+        "id": "bottom",
+        "start": "BL",
+        "end": "BR"
+      },
+      {
+        "id": "right",
+        "start": "BR",
+        "end": "TR"
+      },
+      {
+        "id": "top",
+        "start": "TR",
+        "end": "TL"
+      },
+      {
+        "id": "left",
+        "start": "TL",
+        "end": "BL"
+      }
+    ],
+    "circles": [],
+    "constraints": [
+      {
+        "id": "origin",
+        "kind": "fixed_point",
+        "point": "BL",
+        "datum": {
+          "xy_mm": [
+            0,
+            0
+          ],
+          "source": "explicit local XY origin/position for controlled solver case",
+          "status": "derived"
+        }
+      },
+      {
+        "id": "bottom-orientation",
+        "kind": "horizontal",
+        "line": "bottom"
+      },
+      {
+        "id": "right-orientation",
+        "kind": "vertical",
+        "line": "right"
+      },
+      {
+        "id": "top-orientation",
+        "kind": "horizontal",
+        "line": "top"
+      },
+      {
+        "id": "left-orientation",
+        "kind": "vertical",
+        "line": "left"
+      },
+      {
+        "id": "width",
+        "kind": "distance",
+        "a": "BL",
+        "b": "BR",
+        "parameter": {
+          "name": "width",
+          "value": 100,
+          "unit": "mm",
+          "source": "S010 rectangle dimensions",
+          "status": "derived"
+        }
+      }
+    ]
+  },
+  "geometry": {
+    "profile_lines": [
+      "bottom",
+      "right",
+      "top",
+      "left"
+    ],
+    "hole_circles": [],
+    "extrusion_mm": 8,
+    "frame": {
+      "axis": {
+        "origin_mm": [
+          0,
+          0,
+          0
+        ],
+        "direction": [
+          1,
+          0,
+          0
+        ]
+      },
+      "radial_reference": [
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "source_parameter_references": [],
+  "parameter_provenance": {
+    "status": "derived",
+    "source": "portable regression fixture: elementary rectangle and circles; historical source provenance is retained in the private local catalog",
+    "datum": "explicit local origin; reference plane fixed in group1, sketch solved in group2",
+    "extrusion": "8 mm controlled integration test, not a user-confirmed source dimension",
+    "initial_guesses": "purposely different from target; not dimensional constraints",
+    "unmigrated_source_scope": "full bracket rounded corners/slot, arcs, tangent and symmetry constraints"
+  }
+}

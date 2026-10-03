@@ -1,0 +1,68 @@
+# Local environments and caches
+.venv/
+node_modules/
+__pycache__/
+.cache/
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.coverage
+
+# Local model/image outputs, raw provenance and audit evidence are not release content.
+/artifacts/
+# Exact local configuration scope; safe distributable fixtures live in examples/.
+/configs/method-catalog.json
+/configs/project.json
+/configs/raster-primitives-case.json
+/configs/raster-single-case.json
+/configs/raster-three-regions-case.json
+/configs/reference-cases.json
+/configs/rotor-case.json
+/configs/solver-case.json
+/configs/solver-conflict-case.json
+/configs/solver-hole-case.json
+/configs/solver-under-case.json
+/configs/source-catalog.json
+/configs/surface-case.json
+/configs/surface-dxf-case.json
+/configs/surface-end-laws-case.json
+/configs/surface-grid-case.json
+/configs/tool-catalog.json
+# 按项目逐项合并；已跟踪内容和历史不会因添加规则而清除。
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+.privacy.local.json
+privacy-report*.json
+private-audit/
+private-backup/
+raw-sessions/
+*.original.bundle
+*.pem
+*.key
+id_rsa
+id_ed25519
+credentials.json
+auth.json
+settings.local.json
+# 私有根证书、合法的公开测试夹具等例外，核查内容后另行明确配置。
+
+# Internal learning, migration workflows and publication audits are local-only.
+/docs/internal/
+/work-items.csv
+/docs/maintenance-record.json
+/docs/publication-record.json
+/scripts/verify_bootstrap.py
+/scripts/verify_legacy.py
+/scripts/verify_maintenance.py
+/scripts/verify_migration.py
+/scripts/verify_raster.py
+/scripts/verify_rotor.py
+/scripts/verify_solver.py
+/scripts/verify_surfaces.py

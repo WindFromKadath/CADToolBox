@@ -1,0 +1,32 @@
+[project]
+name = "cadtoolbox"
+version = "0.1.0"
+description = "CAD integration toolbox and source-grounded method catalog"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "cadquery>=2.8,<2.9",
+    "ezdxf>=1.4,<2",
+    "numpy==2.5.3",
+    "pillow==12.3.0",
+    "slvs==3.2",
+]
+
+[project.scripts]
+cadtoolbox = "cadtoolbox.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+package = true
+
+[dependency-groups]
+dev = ["pytest>=8,<10"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
