@@ -1,5 +1,7 @@
 # CADToolBox
 
+中文 | [English](README.en.md)
+
 Python CAD 工具与建模方法库，提供 STEP/DXF 处理、参数化几何、二维约束求解和受控图像轮廓处理。通过明确的单位、轴、参数来源和质量检查，将输入连接到可验证的几何输出。
 
 当前版本：`0.1.0`。API 和配置格式仍在发展中。长度统一为 mm，角度为 rad；明确区分 Face、Solid、Compound 及预期实体数。
