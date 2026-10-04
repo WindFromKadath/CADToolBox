@@ -1,29 +1,31 @@
-# 维护指南
+# Maintenance Guide
 
-本项目以当前代码、接口合同、锁文件和实测结果共同确定能力。API 和配置格式尚未建立稳定承诺；修改时记录受影响范围和验证结果。
+[中文](MAINTENANCE.zh-CN.md) | English
 
-## 结构
+This project's capabilities are determined jointly by the current code, interface contracts, lock file, and measured results. The API and configuration formats carry no stability commitment yet; when changing them, record the affected scope and verification results.
 
-| 目录 | 用途 |
+## Structure
+
+| Directory | Purpose |
 |---|---|
-| `src/cadtoolbox/contracts.py` | 参数来源、单位、轴、厚度、域和质量合同 |
-| `src/cadtoolbox/geometry/` | I/O、测量、参数化几何、裁剪、构造和质量检查 |
-| `src/cadtoolbox/solver/` | 原生求解会话、约束模型和尺寸驱动 |
-| `src/cadtoolbox/raster/` | 受控轮廓和像素基元候选 |
-| `src/cadtoolbox/workflows/` | 将工具连接为可验收的场景流程 |
-| `tests/`、`examples/` | 合成回归与可公开运行的样例 |
-| `scripts/` | UV 环境、样例准备、项目入口和隐私检查 |
-| `docs/` | 使用说明、公开能力目录和代码 API 索引 |
+| `src/cadtoolbox/contracts.py` | Contracts for parameter provenance, units, axes, thickness, domains, and quality |
+| `src/cadtoolbox/geometry/` | I/O, measurement, parametric geometry, trimming, construction, and quality checks |
+| `src/cadtoolbox/solver/` | Native solving sessions, constraint models, and dimension driving |
+| `src/cadtoolbox/raster/` | Controlled outlines and pixel-primitive candidates |
+| `src/cadtoolbox/workflows/` | Chains tools into acceptable scenario flows |
+| `tests/`, `examples/` | Synthetic regression and publicly runnable examples |
+| `scripts/` | UV environment, example preparation, project entries, and privacy checks |
+| `docs/` | Usage guide, public capability catalog, and code API index |
 
-`configs/` 中的真实案例、来源清单与内部验收脚本只在维护者工作区使用。它们不随公开仓库分发，也不以缺失的来源证明补造能力状态。
+Real cases, source manifests, and internal acceptance scripts under `configs/` are used only in the maintainer's workspace. They are not distributed with the public repository, and capability status must not be fabricated from missing provenance.
 
-## 修改与验证
+## Changes and verification
 
-1. 核对受影响实现、当前合同和能力边界。接口、单位、轴、厚度或构造策略变化须说明调用方式及影响。
-2. 使用 UV 锁定环境。为新行为选择正常、边界或失败案例；后端升级和几何质量门槛变化应实际运行相关流程。
-3. 修改后运行受影响检查；完整合成回归按下面的命令准备。更新说明、能力边界和 API 索引时，对照真实代码。
-4. 提交前检查暂存差异、作者/提交者身份、提交说明与输入来源，执行 [安全声明](../SECURITY.md) 中的检查。报告写在仓库外。
-5. 按功能、修复或文档范围提交；分支可使用 `codex/<topic>`。推送后回读远端版本、文件和仓库设置。
+1. Check the affected implementation, current contracts, and capability boundaries. Changes to interfaces, units, axes, thickness, or construction strategies must state the calling convention and impact.
+2. Use the UV locked environment. Choose normal, boundary, or failure cases for new behavior; backend upgrades and geometry quality-gate changes should actually run the related flows.
+3. After changes, run the affected checks; prepare the full synthetic regression with the commands below. When updating the guide, capability boundaries, and API index, check against the real code.
+4. Before committing, review the staged diff, author/committer identity, commit message, and input provenance, and perform the checks in the [security statement](../SECURITY.md). Write reports outside the repository.
+5. Commit by feature, fix, or documentation scope; branches may use `codex/<topic>`. After pushing, read back the remote version, files, and repository settings.
 
 ```powershell
 .\scripts\uv.ps1 sync --locked --check
@@ -32,10 +34,10 @@
 .\scripts\uv.ps1 run --locked cadtoolbox demo-io --output artifacts/maintenance-demo
 ```
 
-输出目录使用新名字。欠约束、冲突、拟合超预算、融合或回读失败必须保留失败状态，不能通过静默放宽门槛取得成功。
+Use a new name for the output directory. Under-constraint, conflicts, over-budget fitting, fusion, or read-back failures must keep their failure status; success must not be obtained by silently loosening gates.
 
-## 文档与数据
+## Documentation and data
 
-根目录 README 面向使用者，说明用途、安装、示例、边界和许可。作者学习记录、内部取舍、迁移任务和发布审计在维护者本地独立保存，不进入公开 Git 树；作者本人维护自己的理解与参数确认。
+The root README is user-facing: purpose, installation, examples, boundaries, and license. Author learning records, internal trade-offs, migration tasks, and release audits are kept separately on the maintainer's machine and do not enter the public Git tree; the author maintains their own understanding and parameter confirmations.
 
-Git 只管理发布范围内的代码和文档。被忽略的配置、模型、图像、失败输入和审计日志须另做受控备份。公开样例安装不覆盖这些文件。项目采用 [MIT 许可](../LICENSE)，输入和第三方依赖的权利须分别核对。
+Git manages only the code and documentation within the release scope. Ignored configs, models, images, failed inputs, and audit logs require separate controlled backups. Public example installation does not overwrite these files. The project uses the [MIT License](../LICENSE); rights in inputs and third-party dependencies must be checked separately.

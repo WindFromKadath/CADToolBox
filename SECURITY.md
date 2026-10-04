@@ -1,47 +1,49 @@
-# 安全与隐私维护
+# Security and Privacy Maintenance
 
-本仓库发布代码、测试、锁文件、使用文档及安全样例。提交者负责核对来源权限、署名和实际暂存版本。
+[中文](SECURITY.zh-CN.md) | English
 
-## 内容范围
+This repository publishes code, tests, lock files, usage documentation, and safe examples. Committers are responsible for verifying source permissions, attribution, and the actual staged version.
 
-| 可进入 Git | 保留受控，不进入公开 Git 树 |
+## Content scope
+
+| May enter Git | Kept controlled; does not enter the public Git tree |
 |---|---|
-| 实现、测试、脚本、UV 锁文件、安全样例 | 虚拟环境、缓存、构建产物 |
-| 公开使用说明、能力与 API 索引 | 作者学习记录、内部任务与发布审计 |
-| 模式检查工具和未启用的 Hook 模板 | 原始模型/图像、真实案例、来源清单、日志与会话 |
-| 已确认的公开署名 | 凭据、私人邮箱/姓名/主机、本机绝对路径和内部地址 |
+| Implementation, tests, scripts, UV lock file, safe examples | Virtual environments, caches, build artifacts |
+| Public usage docs, capability and API indexes | Author learning records, internal tasks, and release audits |
+| Pattern-checking tools and disabled Hook templates | Original models/images, real cases, source manifests, logs, and sessions |
+| Confirmed public attribution | Credentials, personal emails/names/hosts, local absolute paths, and internal addresses |
 
-忽略规则不会清除已跟踪内容或历史，也不提供加密、访问控制或备份。对图片、PDF、Office、模型、压缩包、LFS 和子模块须另外核查正文、元数据及来源权限；模式扫描不覆盖这些内容。
+Ignore rules do not remove tracked content or history, and provide no encryption, access control, or backup. Images, PDFs, Office files, models, archives, LFS, and submodules require separate review of content, metadata, and source permissions; pattern scans do not cover them.
 
-## 提交前检查
+## Pre-commit checks
 
-使用已确认的公开别名与 GitHub noreply 署名，只设置本仓库身份，不更改全局身份。环境变量、amend、cherry-pick 和显式作者参数也可能改变实际署名。
+Use the confirmed public alias and GitHub noreply identity, set only this repository's identity, and do not change the global identity. Environment variables, amend, cherry-pick, and explicit author parameters can also change the actual attribution.
 
-精确暂存并阅读差异。使用 PowerShell 7.2+：
+Stage precisely and read the diff. Use PowerShell 7.2+:
 
 ```powershell
 git status --short
 git diff --cached
-pwsh -NoProfile -File scripts/Invoke-RepoPrivacy.ps1 -Mode Staged -CommitMessagePath <仓库外提交说明文件> -ReportPath <仓库外报告文件>
-pwsh -NoProfile -File scripts/Invoke-RepoPrivacy.ps1 -Mode Index -ReportPath <仓库外报告文件>
-pwsh -NoProfile -File scripts/Invoke-RepoPrivacy.ps1 -Mode History -ReportPath <仓库外报告文件>
+pwsh -NoProfile -File scripts/Invoke-RepoPrivacy.ps1 -Mode Staged -CommitMessagePath <commit-message-file-outside-repo> -ReportPath <report-file-outside-repo>
+pwsh -NoProfile -File scripts/Invoke-RepoPrivacy.ps1 -Mode Index -ReportPath <report-file-outside-repo>
+pwsh -NoProfile -File scripts/Invoke-RepoPrivacy.ps1 -Mode History -ReportPath <report-file-outside-repo>
 ```
 
-替换占位路径后执行。额外私人标识通过仓库外 JSON 数组和 `PRIVACY_TERMS_FILE` 传入，不能提交该列表。检查器及公开规则位于 `.privacy-tools/`；工具只扫描本地对象，不上传内容。
+Replace placeholder paths before running. Additional private identifiers are passed via a JSON array outside the repository through `PRIVACY_TERMS_FILE`; that list must not be committed. The checker and public rules live in `.privacy-tools/`; the tool scans only local objects and uploads nothing.
 
-| 退出码 | 处理 |
+| Exit code | Action |
 |---|---|
-| 0 | 本次范围未发现阻断或待审候选；仍需人工核查附件与来源 |
-| 1 | 修复阻断项、重新暂存并检查 |
-| 2 | 核查准确版本的邮箱、二进制或大文件，记录理由和日期 |
-| 3 | 检查未完成；修复环境或配置后重跑 |
+| 0 | No blocking or pending-review candidates found in this scope; attachments and provenance still require manual review |
+| 1 | Fix blocking items, re-stage, and re-check |
+| 2 | Review the exact versions of emails, binaries, or large files; record reasons and dates |
+| 3 | Check incomplete; fix the environment or configuration and rerun |
 
-Hook 模板默认不启用；启用前检查 `core.hooksPath` 和现有 Hook，不覆盖已有设置。首次公开、新分支或标签推送前检查全部拟发布历史，推送后回读远端内容、署名、许可及可见性。
+Hook templates are disabled by default; before enabling, check `core.hooksPath` and existing hooks, and do not overwrite existing settings. Before first publication, new branches, or tag pushes, check the full history to be released; after pushing, read back the remote content, attribution, license, and visibility.
 
-轻量模式检查不等于完整密钥审计。GitHub secret scanning 和 push protection 可作为额外检查，不能替代本地内容与历史核查。
+Lightweight pattern checks are not a complete secret audit. GitHub secret scanning and push protection can serve as additional checks, but cannot replace local content and history review.
 
-## 发现泄露
+## When a leak is found
 
-有效凭据先撤销或轮换，再处理内容与历史。保存受控备份和脱敏证据，按明确授权范围实施修复。删除、重建或改写历史后仍须核验旧对象入口；访问失败、缓存清理和所有副本消失是不同结论。
+Revoke or rotate valid credentials first, then handle content and history. Keep controlled backups and desensitized evidence, and implement remediation within an explicitly authorized scope. After deletion, recreation, or history rewriting, old object entry points must still be verified; access failure, cache clearing, and disappearance of all copies are different conclusions.
 
-私人标识、密钥、旧敏感提交编号及原始响应不得复制到公开 Issue、PR 或日志。安全问题只提供脱敏说明和可审查的最小复现；内部发布审计留在受控位置。
+Private identifiers, keys, old sensitive commit hashes, and raw responses must not be copied into public Issues, PRs, or logs. Security issues get only desensitized descriptions and reviewable minimal reproductions; internal release audits stay in controlled locations.

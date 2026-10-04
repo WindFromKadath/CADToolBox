@@ -18,7 +18,7 @@ Python CAD 工具与建模方法库，提供 STEP/DXF 处理、参数化几何�
 | 图像处理 | 受控单色/三色轮廓；像素线、圆、弧候选及 JSON/PNG/SVG 输出 |
 | 建模方法 | 参数来源、域选择、拟合预算、构造策略及失败处理的适用条件 |
 
-详细能力与接口见 [工具/方法目录](docs/project-status.json)、[使用说明](docs/USAGE.md) 和 [API 索引](docs/api-index.json)。
+详细能力与接口见 [工具/方法目录](docs/project-status.json)、[使用说明](docs/USAGE.zh-CN.md) 和 [API 索引](docs/api-index.json)。
 
 ## 安装与首次运行
 
@@ -42,7 +42,7 @@ Set-Location -LiteralPath 'CADToolBox'
 .\scripts\uv.ps1 run --locked cadtoolbox build-solved-profile examples/solver-case.json --output artifacts/my-solved-profile
 ```
 
-图像样例生成、Python API、配置字段和失败排查见 [使用说明](docs/USAGE.md)。
+图像样例生成、Python API、配置字段和失败排查见 [使用说明](docs/USAGE.zh-CN.md)。
 
 ## 运行回归
 
@@ -65,6 +65,6 @@ Set-Location -LiteralPath 'CADToolBox'
 
 ## 维护与许可
 
-贡献和验收要求见 [维护指南](docs/MAINTENANCE.md)，提交范围与隐私检查见 [安全声明](SECURITY.md)。原始模型、图像、私有配置、内部学习记录、环境、缓存和生成产物不进入公开版本管理。
+贡献和验收要求见 [维护指南](docs/MAINTENANCE.zh-CN.md)，提交范围与隐私检查见 [安全声明](SECURITY.zh-CN.md)。原始模型、图像、私有配置、内部学习记录、环境、缓存和生成产物不进入公开版本管理。
 
 项目代码采用 [MIT 许可证](LICENSE)。第三方依赖及输入数据遵循各自的许可和来源权限。
